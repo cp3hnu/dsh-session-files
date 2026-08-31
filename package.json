@@ -1,0 +1,36 @@
+{
+  "name": "@deepseek-ai/dsh-session-files",
+  "description": "Session file upload for the DeepSeek Harness Web UI: an attach button lets the user upload arbitrary files (not just model-native images); files land in the session workspace under uploads/<sessionId>/, and an injected in-session note tells the model which directory belongs to this session; a share_session_file tool lets the model hand files to the user as clickable download cards inline in the conversation.",
+  "version": "0.2.2",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "files": [
+    "lib",
+    "cordis.patch.yml"
+  ],
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-llm": "^0.1.0-rc.6",
+    "@deepseek-ai/schemastery": "^3.18.1"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [],
+      "platform": "web"
+    }
+  }
+}

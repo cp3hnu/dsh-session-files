@@ -1,0 +1,7 @@
+# Bundle patch layer for @deepseek-ai/dsh-session-files.
+#
+# 由 profile 组合器按 dsh.profile.bundles 顺序应用:注册本插件的加载行。
+# 安装后无需手动编辑 profile 的补丁文件。
+- insert:
+    - id: dsh-session-files
+      name: '@deepseek-ai/dsh-session-files'
