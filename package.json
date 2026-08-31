@@ -32,5 +32,10 @@
       "inject": [],
       "platform": "web"
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MST19711/dsh-session-files.git"
+  },
+  "homepage": "https://github.com/MST19711/dsh-session-files"
 }
