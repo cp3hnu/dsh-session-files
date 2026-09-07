@@ -199,6 +199,44 @@ console.log("== unicode + filename* ==")
   check("unicode file on disk", existsSync(join(wsA, "uploads", SESS_A, "报告 2026 (final).pdf")))
 }
 
+console.log("== unicode plain filename (browser FormData UTF-8 bytes) ==")
+{
+  // 模拟浏览器 FormData:只发 filename="中文名.ext",值为 UTF-8 原始字节(无 filename*)
+  injected.length = 0
+  const b = boundary()
+  const chineseName = "中文测试文档.txt"
+  const body = multipart(b, [
+    { name: "sessionId", value: SESS_A },
+    { name: "file", filename: chineseName, type: "text/plain", content: Buffer.from("中文内容\n", "utf8") },
+  ])
+  const res = await httpRequest("POST", "/dsh-session-files/upload", {
+    "Content-Type": `multipart/form-data; boundary=${b}`,
+    "Content-Length": String(body.length),
+  }, body)
+  const json = JSON.parse(res.body.toString("utf8"))
+  check("chinese plain filename accepted", res.status === 200 && json.ok === true && json.file.name === chineseName, res.body.toString())
+  check("chinese plain file on disk", existsSync(join(wsA, "uploads", SESS_A, chineseName)))
+  check("chinese file content preserved", existsSync(join(wsA, "uploads", SESS_A, chineseName)) && readFileSync(join(wsA, "uploads", SESS_A, chineseName), "utf8") === "中文内容\n")
+}
+
+console.log("== unicode percent-encoded plain filename ==")
+{
+  injected.length = 0
+  const b = boundary()
+  const chineseName = "附件说明.md"
+  const body = multipart(b, [
+    { name: "sessionId", value: SESS_A },
+    { name: "file", filename: encodeURIComponent(chineseName), type: "text/markdown", content: Buffer.from("# hi\n") },
+  ])
+  const res = await httpRequest("POST", "/dsh-session-files/upload", {
+    "Content-Type": `multipart/form-data; boundary=${b}`,
+    "Content-Length": String(body.length),
+  }, body)
+  const json = JSON.parse(res.body.toString("utf8"))
+  check("percent-encoded chinese filename decoded", res.status === 200 && json.ok === true && json.file.name === chineseName, res.body.toString())
+  check("percent-encoded chinese file on disk", existsSync(join(wsA, "uploads", SESS_A, chineseName)))
+}
+
 console.log("== traversal / illegal names ==")
 {
   const b = boundary()

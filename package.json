@@ -1,7 +1,7 @@
 {
   "name": "@deepseek-ai/dsh-session-files",
   "description": "Session file upload for the DeepSeek Harness Web UI: an attach button lets the user upload arbitrary files (not just model-native images); files land in the session workspace under uploads/<sessionId>/, and an injected in-session note tells the model which directory belongs to this session; a share_session_file tool lets the model hand files to the user as clickable download cards inline in the conversation.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
   "license": "MIT",
   "type": "module",
